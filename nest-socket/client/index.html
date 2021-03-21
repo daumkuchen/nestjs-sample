@@ -1,0 +1,58 @@
+<html>
+
+<head>
+</head>
+
+<body>
+  <button type="button" value="button1" id="button-events">EVENTS</button>
+  <button type="button" value="button2" id="button-identity">IDENTIFY</button>
+  <button type="button" value="button3" id="button-message">MESSAGE</button>
+
+  <script src="./socket.io.js"></script>
+  <script>
+    var endpoint ='http://192.168.0.28:3000/';
+    var socket = io(endpoint);
+    socket.on('connect', function () {
+      console.log('socket: connected');
+    });
+
+    function handleClickEvents() {
+      console.log('socket: event start',);
+      socket.emit('events', {
+        test:'test'
+      });
+      socket.on('events', function (data) {
+        console.log('socket: event', data);
+      });
+      socket.on('exception', function (data) {
+        console.log('socket: event', data);
+      });
+      socket.on('disconnect', function () {
+        console.log('socket: disconnected');
+      });
+    }
+
+    function handleClickIdentity() {
+      console.log('socket: identity start');
+      socket.emit('identity', 0, res =>
+        console.log('socket: identity', res),
+      );
+    }
+
+    function handleClickMessage() {
+      console.log('socket: message start');
+      socket.emit('message', {
+        message:'test'
+      });
+    }
+
+    var button1 = document.getElementById('button-events');
+    var button2 = document.getElementById('button-identity');
+    var button3 = document.getElementById('button-message');
+    button1.addEventListener('click', handleClickEvents);
+    button2.addEventListener('click', handleClickIdentity);
+    button3.addEventListener('click', handleClickMessage);
+  </script>
+</body>
+
+</html>
